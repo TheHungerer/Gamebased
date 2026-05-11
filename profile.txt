@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeJourney – Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #050508;
+      --surface: #0d0d18;
+      --border: rgba(139,92,246,0.25);
+      --purple: #8b5cf6;
+      --cyan: #06b6d4;
+      --glow: rgba(139,92,246,0.6);
+      --glow-cyan: rgba(6,182,212,0.5);
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Ambient background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(139,92,246,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 70%, rgba(6,182,212,0.08) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ─── TOP NAVBAR (from main.html) ─── */
+    .top-navbar {
+      position: sticky;
+      top: 0;
+      height: 48px;
+      background: rgba(8, 12, 20, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1c2840;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 20px;
+      z-index: 200;
+    }
+
+    .top-navbar .nav-left .logo-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #00d4ff;
+      text-shadow: 0 0 14px rgba(0,212,255,0.4);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      margin: 0;
+      text-decoration: none;
+    }
+
+    .top-navbar .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+      margin-left: 10px;
+      padding: 0;
+    }
+
+    .top-navbar .nav-menu li a {
+      display: block;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #6b859e;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .top-navbar .nav-menu li a:hover {
+      color: #d8e6f5;
+      background: rgba(255,255,255,0.04);
+      border-color: #1c2840;
+    }
+
+    .top-navbar .nav-menu li a.active {
+      color: #00d4ff;
+      background: rgba(0,212,255,0.07);
+      border-color: rgba(0,212,255,0.2);
+    }
+
+    .top-navbar .nav-menu li a.btn-wiki {
+      color: #f5c842;
+      background: rgba(245,200,66,0.07);
+      border-color: rgba(245,200,66,0.2);
+    }
+
+    .top-navbar .nav-menu li a.btn-wiki:hover {
+      background: rgba(245,200,66,0.12);
+      border-color: rgba(245,200,66,0.35);
+    }
+
+    .top-navbar .nav-right {
+      margin-left: auto;
+    }
+
+    .top-navbar .nav-right .nav-profile {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 13px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #d8e6f5;
+      text-decoration: none;
+      background: #111a2a;
+      border: 1px solid #253250;
+      border-radius: 7px;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .top-navbar .nav-right .nav-profile:hover {
+      background: #162033;
+      border-color: rgba(0,212,255,0.3);
+      color: #00d4ff;
+    }
+
+    /* ─── EVERYTHING BELOW IS UNTOUCHED ─── */
+
+    /* MAIN */
+    main {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+    }
+
+    /* PROFILE HEADER */
+    .profile-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 2.5rem;
+      align-items: center;
+      padding: 2.5rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      animation: fadeSlideUp 0.6s ease both;
+    }
+
+    .profile-header::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 110px; height: 110px;
+    }
+    .avatar-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      background: conic-gradient(var(--purple), var(--cyan), var(--purple));
+      animation: spin 4s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .avatar-inner {
+      position: absolute;
+      inset: 3px;
+      border-radius: 50%;
+      background: #1a1a2e;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', monospace;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--purple);
+      text-shadow: 0 0 20px var(--glow);
+      z-index: 1;
+    }
+
+    .profile-info h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: 0.3rem;
+    }
+
+    .profile-info .handle {
+      color: var(--cyan);
+      font-size: 1rem;
+      margin-bottom: 0.6rem;
+    }
+
+    .profile-info .bio {
+      color: var(--muted);
+      font-size: 0.95rem;
+      max-width: 420px;
+      line-height: 1.5;
+    }
+
+    .profile-stats {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: flex-end;
+    }
+
+    .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(139,92,246,0.15);
+      border: 1px solid var(--purple);
+      border-radius: 999px;
+      padding: 0.35rem 1rem;
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      color: var(--purple);
+      text-shadow: 0 0 10px var(--glow);
+      box-shadow: 0 0 15px rgba(139,92,246,0.2);
+    }
+
+    .xp-bar-wrap { width: 200px; }
+    .xp-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .xp-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%;
+      width: 72%;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      border-radius: 999px;
+      box-shadow: 0 0 8px var(--glow);
+      animation: growBar 1s ease 0.5s both;
+    }
+    @keyframes growBar { from { width: 0; } to { width: 72%; } }
+
+    .join-date {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* STATS GRID */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+      animation: fadeSlideUp 0.6s ease 0.1s both;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .stat-card:hover {
+      border-color: var(--purple);
+      box-shadow: 0 0 25px rgba(139,92,246,0.25);
+    }
+    .stat-card .icon {
+      font-size: 1.6rem;
+      margin-bottom: 0.5rem;
+    }
+    .stat-card .value {
+      font-family: 'Orbitron', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--purple);
+      text-shadow: 0 0 15px var(--glow);
+    }
+    .stat-card .label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* TWO COLUMN */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      animation: fadeSlideUp 0.6s ease 0.2s both;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.6rem;
+    }
+
+    .panel-title {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .panel-title::before {
+      content: '';
+      display: block;
+      width: 3px;
+      height: 14px;
+      background: var(--purple);
+      border-radius: 2px;
+      box-shadow: 0 0 8px var(--glow);
+    }
+
+    /* ACHIEVEMENTS */
+    .achievement-list { display: flex; flex-direction: column; gap: 0.8rem; }
+    .achievement {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.7rem 1rem;
+      background: rgba(139,92,246,0.06);
+      border: 1px solid rgba(139,92,246,0.15);
+      border-radius: 10px;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .achievement:hover {
+      border-color: var(--purple);
+      background: rgba(139,92,246,0.12);
+    }
+    .achievement .a-icon {
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .achievement .a-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+    .achievement .a-desc {
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .achievement .a-badge {
+      margin-left: auto;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(139,92,246,0.2);
+      color: var(--purple);
+      font-family: 'Orbitron', monospace;
+      white-space: nowrap;
+    }
+
+    /* RECENT CHALLENGES */
+    .challenge-list { display: flex; flex-direction: column; gap: 0.7rem; }
+    .challenge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.8rem 1rem;
+      background: rgba(6,182,212,0.04);
+      border: 1px solid rgba(6,182,212,0.12);
+      border-radius: 10px;
+      transition: border-color 0.2s;
+    }
+    .challenge:hover { border-color: var(--cyan); }
+    .challenge .c-left { display: flex; flex-direction: column; }
+    .challenge .c-name { font-weight: 600; font-size: 0.95rem; }
+    .challenge .c-lang { font-size: 0.75rem; color: var(--muted); }
+    .challenge .c-right { display: flex; align-items: center; gap: 0.8rem; }
+    .challenge .c-xp {
+      font-family: 'Orbitron', monospace;
+      font-size: 0.8rem;
+      color: var(--cyan);
+    }
+    .difficulty {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+    .easy   { background: rgba(34,197,94,0.15);  color: #22c55e; }
+    .medium { background: rgba(234,179,8,0.15);  color: #eab308; }
+    .hard   { background: rgba(239,68,68,0.15);  color: #ef4444; }
+
+    /* SKILL BARS */
+    .skills-section {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.6rem;
+      margin-bottom: 2rem;
+      animation: fadeSlideUp 0.6s ease 0.3s both;
+    }
+
+    .skill-item { margin-bottom: 1rem; }
+    .skill-item:last-child { margin-bottom: 0; }
+    .skill-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.4rem;
+    }
+    .skill-meta .sname { color: var(--text); font-weight: 600; }
+    .skill-meta .spct  { color: var(--purple); font-family: 'Orbitron', monospace; font-size: 0.8rem; }
+    .skill-bar {
+      height: 7px;
+      background: rgba(255,255,255,0.07);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .skill-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--purple), var(--cyan));
+      box-shadow: 0 0 8px var(--glow);
+      animation: growBar 1.2s ease both;
+    }
+
+    @keyframes fadeSlideUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* EDIT BUTTON */
+    .edit-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: transparent;
+      border: 1px solid var(--purple);
+      color: var(--purple);
+      padding: 0.45rem 1.1rem;
+      border-radius: 999px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .edit-btn:hover {
+      background: rgba(139,92,246,0.15);
+      box-shadow: 0 0 16px rgba(139,92,246,0.35);
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 3px; }
+
+    /* GLOW GRID TEXTURE */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(139,92,246,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(139,92,246,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVBAR (main.html design) ─── -->
+  <nav class="top-navbar">
+    <div class="nav-left">
+      <a href="main.html" class="logo-text">CodeJourney</a>
+    </div>
+    <ul class="nav-menu">
+      <li><a href="community.html">Community</a></li>
+      <li><a href="wiki.html" class="btn-wiki">Wiki</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="levels.html">Levels</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="profile.html" class="nav-profile active">👤 Profile</a>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-header">
+      <div class="avatar-wrap">
+        <div class="avatar-inner">CJ</div>
+      </div>
+
+      <div class="profile-info">
+        <h1>CodeJourney</h1>
+        <div class="handle">@codejourney · <span style="color:var(--muted)">Full-Stack Explorer</span></div>
+        <p class="bio">Passionate coder on a mission to master every language. Currently conquering Python and diving deep into algorithms.</p>
+        <div style="margin-top:0.9rem; display:flex; gap:0.7rem;">
+          <button class="edit-btn">✏ Edit Profile</button>
+          <button class="edit-btn" style="border-color:var(--cyan);color:var(--cyan);">⚙ Settings</button>
+        </div>
+      </div>
+
+      <div class="profile-stats">
+        <div class="level-badge">⚡ LEVEL 24</div>
+        <div class="xp-bar-wrap">
+          <div class="xp-label"><span>XP Progress</span><span>7,200 / 10,000</span></div>
+          <div class="xp-bar"><div class="xp-fill"></div></div>
+        </div>
+        <div class="join-date">📅 Joined January 2024</div>
+        <div class="join-date" style="color:var(--purple);">🔥 42-Day Streak</div>
+      </div>
+    </div>
+
+    <!-- STATS GRID -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="icon">⚔️</div>
+        <div class="value">287</div>
+        <div class="label">Challenges Done</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🏆</div>
+        <div class="value">34</div>
+        <div class="label">Achievements</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">💎</div>
+        <div class="value">12,450</div>
+        <div class="label">Total XP</div>
+      </div>
+      <div class="stat-card">
+        <div class="icon">🌐</div>
+        <div class="value">#182</div>
+        <div class="label">Global Rank</div>
+      </div>
+    </div>
+
+    <!-- TWO COL -->
+    <div class="two-col">
+
+      <!-- ACHIEVEMENTS -->
+      <div class="panel">
+        <div class="panel-title">Recent Achievements</div>
+        <div class="achievement-list">
+          <div class="achievement">
+            <div class="a-icon">🔥</div>
+            <div>
+              <div class="a-name">On Fire</div>
+              <div class="a-desc">30-day coding streak</div>
+            </div>
+            <div class="a-badge">EPIC</div>
+          </div>
+          <div class="achievement">
+            <div class="a-icon">🐍</div>
+            <div>
+              <div class="a-name">Python Master</div>
+              <div class="a-desc">Completed all Python levels</div>
+            </div>
+            <div class="a-badge">RARE</div>
+          </div>
+          <div class="achievement">
+            <div class="a-icon">⚡</div>
+            <div>
+              <div class="a-name">Speed Coder</div>
+              <div class="a-desc">Solved challenge in under 60s</div>
+            </div>
+            <div class="a-badge">UNCOMMON</div>
+          </div>
+          <div class="achievement">
+            <div class="a-icon">🧠</div>
+            <div>
+              <div class="a-name">Big Brain</div>
+              <div class="a-desc">10 hard challenges solved</div>
+            </div>
+            <div class="a-badge">RARE</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RECENT CHALLENGES -->
+      <div class="panel">
+        <div class="panel-title">Recent Challenges</div>
+        <div class="challenge-list">
+          <div class="challenge">
+            <div class="c-left">
+              <div class="c-name">Binary Search Tree</div>
+              <div class="c-lang">Python · Data Structures</div>
+            </div>
+            <div class="c-right">
+              <div class="c-xp">+350 XP</div>
+              <div class="difficulty hard">HARD</div>
+            </div>
+          </div>
+          <div class="challenge">
+            <div class="c-left">
+              <div class="c-name">FizzBuzz Remix</div>
+              <div class="c-lang">JavaScript · Logic</div>
+            </div>
+            <div class="c-right">
+              <div class="c-xp">+120 XP</div>
+              <div class="difficulty easy">EASY</div>
+            </div>
+          </div>
+          <div class="challenge">
+            <div class="c-left">
+              <div class="c-name">Recursive Fibonacci</div>
+              <div class="c-lang">Python · Algorithms</div>
+            </div>
+            <div class="c-right">
+              <div class="c-xp">+220 XP</div>
+              <div class="difficulty medium">MED</div>
+            </div>
+          </div>
+          <div class="challenge">
+            <div class="c-left">
+              <div class="c-name">API Rate Limiter</div>
+              <div class="c-lang">TypeScript · Backend</div>
+            </div>
+            <div class="c-right">
+              <div class="c-xp">+400 XP</div>
+              <div class="difficulty hard">HARD</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SKILL BARS -->
+    <div class="skills-section">
+      <div class="panel-title">Language Proficiency</div>
+      <div class="skill-item">
+        <div class="skill-meta"><span class="sname">🐍 Python</span><span class="spct">92%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:92%;animation-delay:0.1s"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-meta"><span class="sname">⚡ JavaScript</span><span class="spct">78%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:78%;animation-delay:0.2s"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-meta"><span class="sname">🔷 TypeScript</span><span class="spct">65%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:65%;animation-delay:0.3s"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-meta"><span class="sname">☕ Java</span><span class="spct">50%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:50%;animation-delay:0.4s"></div></div>
+      </div>
+      <div class="skill-item">
+        <div class="skill-meta"><span class="sname">⚙️ C++</span><span class="spct">38%</span></div>
+        <div class="skill-bar"><div class="skill-fill" style="width:38%;animation-delay:0.5s"></div></div>
+      </div>
+    </div>
+
+  </main>
+
+</body>
+</html>

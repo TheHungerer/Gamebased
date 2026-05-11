@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeQuest – Start Your Code Journey Today</title>
+
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Inter:wght@300;400;500&family=DM+Sans:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- External CSS -->
+  <link rel="stylesheet" href="main.css">
+
+  <style>
+    /* ─── TOP NAVBAR (community.html design) ─── */
+    .top-navbar {
+      position: sticky;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      background: rgba(8, 12, 20, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid #1c2840;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      gap: 20px;
+      z-index: 200;
+    }
+
+    .top-navbar .nav-left .logo-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #00d4ff;
+      text-shadow: 0 0 14px rgba(0,212,255,0.4);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      margin: 0;
+    }
+
+    .top-navbar .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+      margin-left: 10px;
+      padding: 0;
+    }
+
+    .top-navbar .nav-menu li a {
+      display: block;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #6b859e;
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .top-navbar .nav-menu li a:hover {
+      color: #d8e6f5;
+      background: rgba(255,255,255,0.04);
+      border-color: #1c2840;
+    }
+
+    .top-navbar .nav-menu li a.active {
+      color: #00d4ff;
+      background: rgba(0,212,255,0.07);
+      border-color: rgba(0,212,255,0.2);
+    }
+
+    .top-navbar .nav-menu li a.btn-wiki {
+      color: #f5c842;
+      background: rgba(245,200,66,0.07);
+      border-color: rgba(245,200,66,0.2);
+    }
+
+    .top-navbar .nav-menu li a.btn-wiki:hover {
+      background: rgba(245,200,66,0.12);
+      border-color: rgba(245,200,66,0.35);
+    }
+
+    .top-navbar .nav-right {
+      margin-left: auto;
+    }
+
+    .top-navbar .nav-right .nav-profile {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 13px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #d8e6f5;
+      text-decoration: none;
+      background: #111a2a;
+      border: 1px solid #253250;
+      border-radius: 7px;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .top-navbar .nav-right .nav-profile:hover {
+      background: #162033;
+      border-color: rgba(0,212,255,0.3);
+      color: #00d4ff;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="top-navbar">
+    <div class="nav-left">
+      <h2 class="logo-text">CodeJourney</h2>
+    </div>
+
+    <ul class="nav-menu">
+      <li><a href="community.html">Community</a></li>
+      <li><a href="wiki.html" class="btn-wiki">Wiki</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="levels.html">Levels</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="profile.html" class="nav-profile">👤 Profile</a>
+    </div>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+
+    <div class="hero-content">
+      <span class="hero-badge">// Level up your skills</span>
+      <h1>Start Your <em>Code Journey</em> Today!</h1>
+      <p>
+        Learn programming through interactive games, challenges, and levels.
+        Unlock achievements as you master new concepts.
+      </p>
+      <a href="login.html" class="btn-primary">Play Now</a>
+    </div>
+
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section class="about-section">
+    <div class="about reveal" id="about">
+      <div class="about-img">
+        <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=600&q=80"
+          alt="Coder at work" loading="lazy">
+        <div class="play-btn">
+          <div class="play-circle"></div>
+        </div>
+      </div>
+
+      <div class="about-text">
+        <p class="section-label">// about us</p>
+        <h2>About CodeQuest</h2>
+        <p>
+          CodeQuest is the ultimate destination for ICT students seeking an immersive coding experience.
+          Immerse yourself in a world of innovative technology and interactive coding challenges.
+        </p>
+        <a href="#features" class="btn-outline">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FEATURES ─── -->
+  <section class="features" id="features">
+
+    <div class="section-header reveal">
+      <p class="section-label">// what we offer</p>
+      <h2>Level Up Your Skills</h2>
+    </div>
+
+    <div class="cards">
+
+      <div class="card reveal">
+        <div class="card-icon">🎮</div>
+        <h3>Interactive Games</h3>
+        <p>Learn coding concepts through fun, engaging mini-games.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon">⚔️</div>
+        <h3>Daily Challenges</h3>
+        <p>Sharpen your skills with fresh coding challenges every day.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon">🏆</div>
+        <h3>Achievement System</h3>
+        <p>Unlock badges and trophies as you progress.</p>
+      </div>
+
+      <div class="card reveal">
+        <div class="card-icon">🌐</div>
+        <h3>Community</h3>
+        <p>Join thousands of learners and grow together.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ─── STATS ─── -->
+  <section class="stats">
+
+    <div class="stat-item reveal">
+      <div class="stat-num">50K+</div>
+      <div class="stat-label">Students</div>
+    </div>
+
+    <div class="stat-item reveal">
+      <div class="stat-num">200+</div>
+      <div class="stat-label">Challenges</div>
+    </div>
+
+    <div class="stat-item reveal">
+      <div class="stat-num">98%</div>
+      <div class="stat-label">Satisfaction</div>
+    </div>
+
+    <div class="stat-item reveal">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Languages</div>
+    </div>
+
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer>
+    <div class="footer-bottom">
+      <p>© 2025 CodeQuest. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script>
+    function goToProfile() {
+      window.location.href = "profile.html";
+    }
+  </script>
+
+  <!-- External JS -->
+  <script src="pr.js"></script>
+
+</body>
+</html>

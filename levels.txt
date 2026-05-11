@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Levels – CodeJourney</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:      #080c14;
+      --sidebar: #0b1018;
+      --panel:   #0e1520;
+      --panel2:  #111a2a;
+      --panel3:  #162033;
+      --border:  #1c2840;
+      --border2: #253250;
+      --accent:  #00d4ff;
+      --accent2: #0091b0;
+      --gold:    #f5c842;
+      --muted:   #3a4f6b;
+      --text:    #d8e6f5;
+      --text2:   #6b859e;
+      --boss:    #f89820;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      min-height: 100vh;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--text);
+    }
+
+    /* ── NAVBAR ── */
+    .top-navbar {
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      height: 48px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(8, 12, 20, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      gap: 20px;
+    }
+
+    .nav-left .logo-text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-shadow: 0 0 14px rgba(0,212,255,0.4);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .nav-menu {
+      display: flex;
+      list-style: none;
+      gap: 2px;
+      margin-left: 10px;
+    }
+
+    .nav-menu li a {
+      display: block;
+      padding: 5px 12px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text2);
+      text-decoration: none;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      transition: all 0.15s;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .nav-menu li a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.04);
+      border-color: var(--border);
+    }
+
+    .nav-menu li a.active {
+      color: var(--accent);
+      background: rgba(0,212,255,0.07);
+      border-color: rgba(0,212,255,0.2);
+    }
+
+    .nav-menu li a.btn-wiki {
+      color: var(--gold);
+      background: rgba(245,200,66,0.07);
+      border-color: rgba(245,200,66,0.2);
+    }
+
+    .nav-menu li a.btn-wiki:hover {
+      background: rgba(245,200,66,0.12);
+      border-color: rgba(245,200,66,0.35);
+    }
+
+    .nav-right { margin-left: auto; }
+
+    .nav-right .nav-profile {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 13px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      background: var(--panel2);
+      border: 1px solid var(--border2);
+      border-radius: 7px;
+      transition: all 0.15s;
+      white-space: nowrap;
+      font-family: 'DM Sans', sans-serif;
+    }
+
+    .nav-right .nav-profile:hover {
+      background: var(--panel3);
+      border-color: rgba(0,212,255,0.3);
+      color: var(--accent);
+    }
+
+    /* ── PAGE ── */
+    .lv-page {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 4rem;
+    }
+
+    .lv-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .lv-label {
+      font-size: 0.65rem;
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .lv-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+    }
+
+    .lv-title em {
+      font-style: normal;
+      color: var(--accent);
+      text-shadow: 0 0 20px rgba(0,212,255,0.3);
+    }
+
+    .xp-bar-wrap {
+      max-width: 420px;
+      margin: 1.4rem auto 0;
+    }
+
+    .xp-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.68rem;
+      color: var(--text2);
+      margin-bottom: 6px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .xp-track {
+      height: 6px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 99px;
+      width: 62%;
+      box-shadow: 0 0 10px rgba(0,212,255,0.3);
+    }
+
+    /* ── FILTERS ── */
+    .filter-row {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .filter-btn {
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.06em;
+      padding: 5px 14px;
+      border-radius: 99px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-btn:hover { border-color: var(--border2); color: var(--text); }
+    .filter-btn.active {
+      background: rgba(0,212,255,0.08);
+      border-color: rgba(0,212,255,0.35);
+      color: var(--accent);
+    }
+
+    /* ── TIER BLOCKS ── */
+    .tier-block { margin-bottom: 2.5rem; }
+
+    .tier-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+    }
+
+    .tier-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── LEVEL CARDS ── */
+    .levels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+      gap: 10px;
+    }
+
+    .lv-card {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .lv-card:hover:not(.locked) {
+      border-color: rgba(0,212,255,0.3);
+      background: var(--panel2);
+      transform: translateY(-2px);
+    }
+
+    .lv-card.active {
+      border-color: var(--accent);
+      background: rgba(0,212,255,0.04);
+    }
+
+    .lv-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      box-shadow: 0 0 8px rgba(0,212,255,0.4);
+    }
+
+    .lv-card.completed {
+      border-color: rgba(0,212,255,0.15);
+      background: rgba(0,212,255,0.02);
+      opacity: 0.82;
+    }
+
+    .lv-card.locked {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+
+    .lv-card.boss {
+      border-color: rgba(248,152,32,0.25);
+      background: rgba(248,152,32,0.03);
+    }
+
+    .lv-card.boss:hover:not(.locked) {
+      border-color: rgba(248,152,32,0.5);
+      background: rgba(248,152,32,0.06);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .card-num {
+      font-size: 0.6rem;
+      color: var(--muted);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .card-badge {
+      font-size: 0.55rem;
+      padding: 2px 7px;
+      border-radius: 99px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .badge-done   { background: rgba(0,212,255,0.1); color: var(--accent); border: 1px solid rgba(0,212,255,0.2); }
+    .badge-active { background: var(--accent); color: var(--bg); }
+    .badge-boss   { background: rgba(248,152,32,0.12); color: var(--boss); border: 1px solid rgba(248,152,32,0.25); }
+    .badge-locked { background: var(--panel2); color: var(--muted); border: 1px solid var(--border); }
+    .badge-play   { background: rgba(0,212,255,0.08); color: var(--accent); border: 1px solid rgba(0,212,255,0.15); }
+
+    .card-icon {
+      font-size: 24px;
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .card-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .lv-card.locked .card-name { color: var(--muted); }
+
+    .card-xp {
+      font-size: 0.6rem;
+      color: var(--text2);
+      letter-spacing: 0.03em;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .lv-card.active .card-xp { color: rgba(0,212,255,0.6); }
+    .lv-card.boss   .card-xp { color: rgba(248,152,32,0.55); }
+
+    .mini-prog {
+      height: 3px;
+      background: var(--border);
+      border-radius: 99px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .mini-fill {
+      height: 100%;
+      border-radius: 99px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+    }
+
+    .lv-card.boss .mini-fill { background: var(--boss); }
+
+    /* ── MODAL ── */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--panel);
+      border: 1px solid var(--border2);
+      border-radius: 16px;
+      padding: 2rem;
+      max-width: 360px;
+      width: 90%;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 16px;
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 18px;
+      cursor: pointer;
+      font-family: monospace;
+    }
+
+    .modal-close:hover { color: var(--text); }
+
+    .modal-icon  { font-size: 38px; margin-bottom: 12px; }
+    .modal-lv    { font-size: 0.6rem; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 4px; font-family: 'Space Mono', monospace; }
+
+    .modal-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+
+    .modal-desc {
+      font-size: 0.8rem;
+      color: var(--text2);
+      line-height: 1.7;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-stats {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 1.2rem;
+    }
+
+    .mstat {
+      flex: 1;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 10px;
+      text-align: center;
+    }
+
+    .mstat-val {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 2px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .mstat-label { font-size: 0.55rem; color: var(--muted); letter-spacing: 0.08em; font-family: 'Space Mono', monospace; }
+
+    .modal-prog-wrap { margin-bottom: 1.2rem; }
+
+    .modal-prog-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .modal-prog-track {
+      height: 4px;
+      background: var(--panel2);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .modal-prog-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      border-radius: 99px;
+      box-shadow: 0 0 8px rgba(0,212,255,0.3);
+    }
+
+    .modal-btn {
+      width: 100%;
+      padding: 11px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      border: none;
+      border-radius: 8px;
+      color: var(--bg);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 0 16px rgba(0,212,255,0.25);
+    }
+
+    .modal-btn:hover     { transform: scale(1.02); box-shadow: 0 0 24px rgba(0,212,255,0.4); }
+    .modal-btn.boss-btn  { background: linear-gradient(135deg, #c97010, var(--boss)); box-shadow: 0 0 16px rgba(248,152,32,0.25); }
+    .modal-btn.boss-btn:hover { box-shadow: 0 0 24px rgba(248,152,32,0.4); }
+
+    .boss .mstat-val { color: var(--boss); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .nav-menu { display: none; }
+      .lv-title { font-size: 1.6rem; }
+      .levels-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="top-navbar">
+    <div class="nav-left">
+      <h2 class="logo-text">CodeJourney</h2>
+    </div>
+    <ul class="nav-menu">
+      <li><a href="community.html">Community</a></li>
+      <li><a href="wiki.html" class="btn-wiki">Wiki</a></li>
+      <li><a href="challenges.html">Challenges</a></li>
+      <li><a href="levels.html" class="active">Levels</a></li>
+    </ul>
+    <div class="nav-right">
+      <a href="profile.html" class="nav-profile">👤 Profile</a>
+    </div>
+  </nav>
+
+  <!-- ─── MAIN PAGE ─── -->
+  <div class="lv-page">
+
+    <div class="lv-header">
+      <p class="lv-label">// your journey</p>
+      <h1 class="lv-title">Level <em>Map</em></h1>
+      <div class="xp-bar-wrap">
+        <div class="xp-meta">
+          <span>Level 7 · Apprentice</span>
+          <span>620 / 1000 XP</span>
+        </div>
+        <div class="xp-track">
+          <div class="xp-fill"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="filter-row">
+      <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('completed', this)">Completed</button>
+      <button class="filter-btn" onclick="setFilter('available', this)">Available</button>
+      <button class="filter-btn" onclick="setFilter('locked', this)">Locked</button>
+      <button class="filter-btn" onclick="setFilter('boss', this)">Boss Stages</button>
+    </div>
+
+    <div id="pathWrap"></div>
+
+  </div>
+
+  <!-- ─── MODAL ─── -->
+  <div class="modal-backdrop" id="modalBackdrop" onclick="closeModal(event)">
+    <div class="modal" id="modal">
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+      <div id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+    const levels = [
+      { id:1,  name:"Hello, World!",      icon:"🌱", xp:50,  topic:"Basics",          desc:"Write your first lines of code and understand how programs run.",          tasks:3,  mins:10, status:"completed", progress:100, tier:"Beginner" },
+      { id:2,  name:"Variables & Types",  icon:"📦", xp:75,  topic:"Basics",          desc:"Learn how data is stored and what types of values exist.",                 tasks:5,  mins:15, status:"completed", progress:100, tier:"Beginner" },
+      { id:3,  name:"If & Else",          icon:"🔀", xp:80,  topic:"Logic",           desc:"Make your program decide what to do based on conditions.",                 tasks:6,  mins:20, status:"completed", progress:100, tier:"Beginner" },
+      { id:4,  name:"Loops & Iteration",  icon:"🔄", xp:90,  topic:"Logic",           desc:"Repeat actions efficiently without writing duplicate code.",                tasks:7,  mins:20, status:"completed", progress:100, tier:"Beginner" },
+      { id:5,  name:"BOSS: Logic Arena",  icon:"⚔️", xp:200, topic:"Boss",            desc:"Prove your mastery of basics and logic in a timed challenge.",             tasks:1,  mins:30, status:"completed", progress:100, tier:"Beginner",     boss:true },
+      { id:6,  name:"Functions",          icon:"🔧", xp:100, topic:"Functions",       desc:"Bundle reusable blocks of logic into named functions.",                    tasks:8,  mins:25, status:"completed", progress:100, tier:"Intermediate" },
+      { id:7,  name:"Arrays & Lists",     icon:"📋", xp:110, topic:"Data Structures", desc:"Store and manipulate collections of data efficiently.",                    tasks:8,  mins:25, status:"active",    progress:62,  tier:"Intermediate" },
+      { id:8,  name:"Dictionaries",       icon:"📖", xp:120, topic:"Data Structures", desc:"Map keys to values for fast lookup and structured data.",                  tasks:9,  mins:30, status:"available", progress:0,   tier:"Intermediate" },
+      { id:9,  name:"String Magic",       icon:"✂️", xp:100, topic:"Strings",         desc:"Manipulate text: slice, search, replace, and format strings.",             tasks:7,  mins:20, status:"available", progress:0,   tier:"Intermediate" },
+      { id:10, name:"BOSS: Data Dungeon", icon:"🐉", xp:300, topic:"Boss",            desc:"Face off against complex data challenges — only the prepared survive.",    tasks:1,  mins:40, status:"locked",    progress:0,   tier:"Intermediate", boss:true },
+      { id:11, name:"OOP Basics",         icon:"🧱", xp:130, topic:"OOP",             desc:"Understand objects, classes, and the blueprint model of programming.",      tasks:10, mins:35, status:"locked",    progress:0,   tier:"Advanced" },
+      { id:12, name:"Inheritance",        icon:"🧬", xp:140, topic:"OOP",             desc:"Extend classes to share behavior and reduce repetition.",                  tasks:8,  mins:30, status:"locked",    progress:0,   tier:"Advanced" },
+      { id:13, name:"Error Handling",     icon:"🛡️", xp:120, topic:"Robustness",      desc:"Catch exceptions and write code that fails gracefully.",                   tasks:6,  mins:25, status:"locked",    progress:0,   tier:"Advanced" },
+      { id:14, name:"File I/O",           icon:"💾", xp:130, topic:"Systems",         desc:"Read from and write to files to persist data.",                            tasks:7,  mins:25, status:"locked",    progress:0,   tier:"Advanced" },
+      { id:15, name:"BOSS: The Gauntlet", icon:"💀", xp:500, topic:"Boss",            desc:"The ultimate test. Combine everything you've learned to survive.",         tasks:1,  mins:60, status:"locked",    progress:0,   tier:"Advanced",     boss:true },
+    ];
+
+    const tiers = ["Beginner", "Intermediate", "Advanced"];
+    let currentFilter = "all";
+
+    function getCardClass(lv) {
+      let cls = "lv-card " + lv.status;
+      if (lv.boss) cls += " boss";
+      return cls;
+    }
+
+    function getBadge(lv) {
+      if (lv.status === "completed") return `<span class="card-badge badge-done">✓ DONE</span>`;
+      if (lv.status === "active")    return `<span class="card-badge badge-active">IN PROGRESS</span>`;
+      if (lv.boss)                   return `<span class="card-badge badge-boss">BOSS</span>`;
+      if (lv.status === "locked")    return `<span class="card-badge badge-locked">🔒</span>`;
+      return `<span class="card-badge badge-play">PLAY</span>`;
+    }
+
+    function renderLevels() {
+      const wrap = document.getElementById("pathWrap");
+      wrap.innerHTML = "";
+
+      tiers.forEach(tier => {
+        const tierLevels = levels.filter(lv => {
+          if (lv.tier !== tier) return false;
+          if (currentFilter === "all")       return true;
+          if (currentFilter === "boss")      return lv.boss;
+          if (currentFilter === "completed") return lv.status === "completed";
+          if (currentFilter === "available") return lv.status === "available" || lv.status === "active";
+          if (currentFilter === "locked")    return lv.status === "locked";
+          return true;
+        });
+        if (!tierLevels.length) return;
+
+        const block = document.createElement("div");
+        block.className = "tier-block";
+        block.innerHTML = `<div class="tier-label">${tier.toUpperCase()}</div>`;
+
+        const grid = document.createElement("div");
+        grid.className = "levels-grid";
+
+        tierLevels.forEach(lv => {
+          const card = document.createElement("div");
+          card.className = getCardClass(lv);
+          if (lv.status !== "locked") card.onclick = () => openModal(lv);
+          card.innerHTML = `
+            <div class="card-top">
+              <span class="card-num">LV.${String(lv.id).padStart(2, "0")}</span>
+              ${getBadge(lv)}
+            </div>
+            <span class="card-icon">${lv.icon}</span>
+            <div class="card-name">${lv.name}</div>
+            <div class="card-xp">+${lv.xp} XP · ${lv.mins}min</div>
+            ${lv.progress > 0 ? `<div class="mini-prog"><div class="mini-fill" style="width:${lv.progress}%"></div></div>` : ""}
+          `;
+          grid.appendChild(card);
+        });
+
+        block.appendChild(grid);
+        wrap.appendChild(block);
+      });
+    }
+
+    function setFilter(f, btn) {
+      currentFilter = f;
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderLevels();
+    }
+
+    function openModal(lv) {
+      const isBoss   = lv.boss;
+      const isActive = lv.status === "active";
+      const isDone   = lv.status === "completed";
+      const btnClass = isBoss ? "modal-btn boss-btn" : "modal-btn";
+      const btnLabel = isActive ? "CONTINUE →" : isDone ? "REPLAY ↺" : "START →";
+      const bossClass = isBoss ? " boss" : "";
+
+      document.getElementById("modal-body").innerHTML = `
+        <div class="modal-icon">${lv.icon}</div>
+        <div class="modal-lv">LEVEL ${lv.id} · ${lv.topic.toUpperCase()}</div>
+        <div class="modal-name">${lv.name}</div>
+        <div class="modal-desc">${lv.desc}</div>
+        <div class="modal-stats${bossClass}">
+          <div class="mstat"><div class="mstat-val">+${lv.xp}</div><div class="mstat-label">XP REWARD</div></div>
+          <div class="mstat"><div class="mstat-val">${lv.tasks}</div><div class="mstat-label">TASKS</div></div>
+          <div class="mstat"><div class="mstat-val">${lv.mins}m</div><div class="mstat-label">AVG TIME</div></div>
+        </div>
+        ${isActive ? `
+          <div class="modal-prog-wrap">
+            <div class="modal-prog-meta"><span>Progress</span><span>${lv.progress}%</span></div>
+            <div class="modal-prog-track"><div class="modal-prog-fill" style="width:${lv.progress}%"></div></div>
+          </div>` : ""}
+        <button class="${btnClass}" onclick="alert('Navigating to level ${lv.id}...')">${btnLabel}</button>
+      `;
+      document.getElementById("modalBackdrop").classList.add("open");
+    }
+
+    function closeModal(e) {
+      if (e.target === document.getElementById("modalBackdrop")) closeModalDirect();
+    }
+
+    function closeModalDirect() {
+      document.getElementById("modalBackdrop").classList.remove("open");
+    }
+
+    renderLevels();
+  </script>
+
+</body>
+</html>

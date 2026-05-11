@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IT Student Wiki — Dev Knowledge Base</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;600;700&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --surface2: #1a1e2a;
+    --border: #252836;
+    --java: #f89820;
+    --js: #f7df1e;
+    --html: #e34c26;
+    --css: #264de4;
+    --text: #e8e9f0;
+    --muted: #7a7f94;
+    --accent: #5ee7df;
+    --radius: 8px;
+    --navbar-h: 48px;
+    --gold: #f5c842;
+    --accent-nav: #00d4ff;
+    --panel2: #111a2a;
+    --border2: #253250;
+    --sidebar-w: 220px;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  /* ─── TOP NAVBAR ─── */
+  .top-navbar {
+    position: sticky;
+    top: 0; left: 0; right: 0;
+    height: var(--navbar-h);
+    background: rgba(8, 12, 20, 0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1c2840;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    gap: 20px;
+    z-index: 200;
+  }
+  .nav-left .logo-text {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-nav);
+    text-shadow: 0 0 14px rgba(0,212,255,0.4);
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+  .nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2px;
+    margin-left: 10px;
+  }
+  .nav-menu li a {
+    display: block;
+    padding: 5px 12px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6b859e;
+    text-decoration: none;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav-menu li a:hover { color: #d8e6f5; background: rgba(255,255,255,0.04); border-color: #1c2840; }
+  .nav-menu li a.active { color: var(--gold); background: rgba(245,200,66,0.07); border-color: rgba(245,200,66,0.2); }
+  .nav-menu li a.active:hover { background: rgba(245,200,66,0.12); border-color: rgba(245,200,66,0.35); }
+  .nav-right { margin-left: auto; }
+  .nav-right .nav-profile {
+    display: flex; align-items: center; gap: 7px; padding: 5px 13px;
+    font-size: 0.78rem; font-weight: 600; color: #d8e6f5; text-decoration: none;
+    background: var(--panel2); border: 1px solid var(--border2); border-radius: 7px;
+    transition: all 0.15s; white-space: nowrap; font-family: 'DM Sans', sans-serif;
+  }
+  .nav-right .nav-profile:hover { background: #162033; border-color: rgba(0,212,255,0.3); color: var(--accent-nav); }
+
+  /* ─── WIKI LANGUAGE NAV ─── */
+  .wiki-nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    height: 52px;
+    position: sticky;
+    top: var(--navbar-h);
+    z-index: 100;
+  }
+  .wiki-nav .logo {
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 600; font-size: 1rem;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(94,231,223,0.4);
+    text-decoration: none; white-space: nowrap; cursor: pointer;
+  }
+  .nav-links { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .nav-link {
+    padding: 0.3rem 0.8rem; border-radius: 4px; font-size: 0.85rem; font-weight: 600;
+    cursor: pointer; border: 1px solid transparent; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .nav-link[data-lang="java"] { color: var(--java); border-color: rgba(248,152,32,0.3); }
+  .nav-link[data-lang="java"]:hover, .nav-link[data-lang="java"].active { background: rgba(248,152,32,0.15); border-color: var(--java); }
+  .nav-link[data-lang="js"] { color: var(--js); border-color: rgba(247,223,30,0.3); }
+  .nav-link[data-lang="js"]:hover, .nav-link[data-lang="js"].active { background: rgba(247,223,30,0.1); border-color: var(--js); }
+  .nav-link[data-lang="html"] { color: var(--html); border-color: rgba(227,76,38,0.3); }
+  .nav-link[data-lang="html"]:hover, .nav-link[data-lang="html"].active { background: rgba(227,76,38,0.12); border-color: var(--html); }
+  .nav-link[data-lang="css"] { color: #7b9cf5; border-color: rgba(38,77,228,0.4); }
+  .nav-link[data-lang="css"]:hover, .nav-link[data-lang="css"].active { background: rgba(38,77,228,0.15); border-color: var(--css); }
+  .search-box {
+    margin-left: auto; background: var(--surface2); border: 1px solid var(--border);
+    color: var(--text); padding: 0.4rem 1rem; border-radius: 20px;
+    font-size: 0.85rem; font-family: 'DM Sans', sans-serif; width: 220px;
+    outline: none; transition: border-color 0.2s;
+  }
+  .search-box:focus { border-color: var(--accent); }
+  .search-box::placeholder { color: var(--muted); }
+
+  /* ─── LAYOUT: SIDEBAR + MAIN ─── */
+  .layout {
+    display: grid;
+    grid-template-columns: var(--sidebar-w) 1fr;
+    min-height: calc(100vh - var(--navbar-h) - 52px);
+    align-items: start;
+  }
+
+  /* ─── SIDEBAR ─── */
+  aside {
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    padding: 1.2rem 0;
+    position: sticky;
+    top: calc(var(--navbar-h) + 52px);
+    height: calc(100vh - var(--navbar-h) - 52px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  aside::-webkit-scrollbar { width: 4px; }
+  aside::-webkit-scrollbar-track { background: transparent; }
+  aside::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .sidebar-section { margin-bottom: 0.5rem; }
+
+  .sidebar-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    padding: 0.6rem 1.2rem 0.3rem;
+  }
+
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.45rem 1.2rem;
+    font-size: 0.82rem;
+    color: #9aa0b8;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 2px solid transparent;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .sidebar-item:hover {
+    background: var(--surface2);
+    color: var(--text);
+    border-left-color: var(--border);
+  }
+  .sidebar-item.active {
+    background: var(--surface2);
+    color: var(--text);
+    font-weight: 600;
+  }
+  .sidebar-item[data-lang="java"].active  { border-left-color: var(--java);  color: var(--java); }
+  .sidebar-item[data-lang="js"].active    { border-left-color: var(--js);    color: var(--js); }
+  .sidebar-item[data-lang="html"].active  { border-left-color: var(--html);  color: var(--html); }
+  .sidebar-item[data-lang="css"].active   { border-left-color: #7b9cf5;      color: #7b9cf5; }
+
+  .dot {
+    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-java { background: var(--java); }
+  .dot-js   { background: var(--js); }
+  .dot-html { background: var(--html); }
+  .dot-css  { background: var(--css); }
+
+  /* ─── MAIN CONTENT ─── */
+  main { padding: 2.5rem 3rem; max-width: 900px; }
+
+  .home { display: block; }
+  .home-hero { margin-bottom: 3rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border); }
+  .home-hero h1 { font-family: 'Libre Baskerville', serif; font-size: 2.8rem; line-height: 1.2; margin-bottom: 1rem; }
+  .home-hero p { color: var(--muted); font-size: 1.05rem; line-height: 1.7; max-width: 600px; }
+  .lang-cards { display: grid; grid-template-columns: repeat(2,1fr); gap: 1rem; margin-bottom: 2rem; }
+  .lang-card {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.5rem; cursor: pointer; transition: all 0.2s; position: relative; overflow: hidden;
+  }
+  .lang-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; }
+  .lang-card[data-lang="java"]::before { background: var(--java); }
+  .lang-card[data-lang="js"]::before   { background: var(--js); }
+  .lang-card[data-lang="html"]::before { background: var(--html); }
+  .lang-card[data-lang="css"]::before  { background: var(--css); }
+  .lang-card:hover { border-color:#3a3f52; transform:translateY(-2px); box-shadow:0 8px 30px rgba(0,0,0,0.3); }
+  .card-icon { font-size: 2rem; margin-bottom: 0.7rem; }
+  .card-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 0.4rem; }
+  .lang-card[data-lang="java"] .card-title { color: var(--java); }
+  .lang-card[data-lang="js"]   .card-title { color: var(--js); }
+  .lang-card[data-lang="html"] .card-title { color: var(--html); }
+  .lang-card[data-lang="css"]  .card-title { color: #7b9cf5; }
+  .card-desc { color: var(--muted); font-size: 0.85rem; line-height: 1.5; }
+  .card-topics { margin-top: 0.8rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .topic-tag {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 3px; padding: 0.15rem 0.5rem; color: var(--muted);
+  }
+
+  .article { display: none; }
+  .article-header { border-bottom: 1px solid var(--border); padding-bottom: 1.5rem; margin-bottom: 2rem; }
+  .article-breadcrumb { font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; color: var(--muted); margin-bottom: 0.8rem; }
+  .article-breadcrumb span { cursor: pointer; }
+  .article-breadcrumb span:hover { color: var(--accent); }
+  .article-title { font-family: 'Libre Baskerville', serif; font-size: 2.2rem; line-height: 1.2; margin-bottom: 0.8rem; }
+  .article-meta { display: flex; align-items: center; gap: 1rem; }
+  .lang-badge {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.72rem; font-weight: 600;
+    padding: 0.2rem 0.6rem; border-radius: 3px; letter-spacing: 0.05em;
+  }
+  .lang-badge.java { background: rgba(248,152,32,0.15); color: var(--java); border: 1px solid rgba(248,152,32,0.4); }
+  .lang-badge.js   { background: rgba(247,223,30,0.1);  color: var(--js);   border: 1px solid rgba(247,223,30,0.4); }
+  .lang-badge.html { background: rgba(227,76,38,0.12);  color: var(--html); border: 1px solid rgba(227,76,38,0.4); }
+  .lang-badge.css  { background: rgba(38,77,228,0.12);  color: #7b9cf5;     border: 1px solid rgba(38,77,228,0.5); }
+  .article-difficulty { font-size: 0.78rem; color: var(--muted); }
+
+  .article-body h2 {
+    font-family: 'Libre Baskerville', serif; font-size: 1.5rem;
+    margin-top: 2.5rem; margin-bottom: 1rem;
+    padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+  }
+  .article-body h3 { font-size: 1.1rem; font-weight: 600; margin-top: 1.8rem; margin-bottom: 0.7rem; color: var(--accent); }
+  .article-body p  { color: #c5c8d6; line-height: 1.8; margin-bottom: 1rem; font-size: 0.95rem; }
+  .article-body ul, .article-body ol { padding-left: 1.5rem; margin-bottom: 1rem; }
+  .article-body li { color: #c5c8d6; line-height: 1.8; font-size: 0.95rem; margin-bottom: 0.3rem; }
+
+  .infobox {
+    float: right; background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1rem; margin: 0 0 1.5rem 2rem;
+    width: 240px; font-size: 0.82rem;
+  }
+  .infobox-title {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted);
+    margin-bottom: 0.8rem; padding-bottom: 0.5rem; border-bottom: 1px solid var(--border);
+  }
+  .infobox-row { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+  .infobox-key { color: var(--muted); }
+  .infobox-val { color: var(--text); font-weight: 600; }
+
+  pre {
+    background: #090b10; border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1.2rem 1.5rem; overflow-x: auto; margin: 1rem 0 1.5rem;
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.82rem; line-height: 1.7;
+  }
+  code {
+    font-family: 'IBM Plex Mono', monospace; font-size: 0.85em;
+    background: #090b10; border: 1px solid var(--border); border-radius: 3px;
+    padding: 0.1em 0.4em; color: var(--accent);
+  }
+  pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+  .keyword { color: #c792ea; }
+  .string  { color: #c3e88d; }
+  .comment { color: #546e7a; font-style: italic; }
+  .number  { color: #f78c6c; }
+  .fn      { color: #82aaff; }
+  .type    { color: #ffcb6b; }
+  .tag     { color: var(--html); }
+  .attr    { color: var(--js); }
+  .val     { color: #c3e88d; }
+  .prop    { color: #7b9cf5; }
+
+  .tip-box {
+    background: rgba(94,231,223,0.05); border: 1px solid rgba(94,231,223,0.2);
+    border-left: 3px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 1rem 1.2rem; margin: 1.5rem 0;
+  }
+  .tip-box strong { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .tip-box p { margin: 0.4rem 0 0; font-size: 0.9rem; }
+
+  .toc {
+    background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1rem 1.2rem; margin-bottom: 2rem; display: inline-block; min-width: 220px;
+  }
+  .toc-title { font-weight: 600; font-size: 0.85rem; margin-bottom: 0.6rem; }
+  .toc a { display: block; font-size: 0.82rem; color: var(--muted); text-decoration: none; padding: 0.2rem 0; transition: color 0.15s; }
+  .toc a:hover { color: var(--accent); }
+  .toc a::before { content: '§ '; color: var(--border); }
+  .clearfix::after { content: ''; display: table; clear: both; }
+
+  @media (max-width: 768px) {
+    .layout { grid-template-columns: 1fr; }
+    aside { display: none; }
+    main { padding: 1.5rem; }
+    .lang-cards { grid-template-columns: 1fr; }
+    .infobox { float: none; width: 100%; margin: 0 0 1.5rem; }
+    .nav-menu { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── TOP NAVBAR ─── -->
+<nav class="top-navbar">
+  <div class="nav-left">
+    <a href="main.html" class="logo-text">CodeJourney</a>
+  </div>
+  <ul class="nav-menu">
+    <li><a href="community.html">Community</a></li>
+    <li><a href="wiki.html" class="active">Wiki</a></li>
+    <li><a href="challenges.html">Challenges</a></li>
+    <li><a href="levels.html">Levels</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="profile.html" class="nav-profile">👤 Profile</a>
+  </div>
+</nav>
+
+<!-- ─── WIKI LANGUAGE NAV ─── -->
+<nav class="wiki-nav">
+  <span class="logo" onclick="showHome()">💻 Wiki</span>
+  <div class="nav-links">
+    <div class="nav-link" data-lang="java" onclick="showLang('java')">☕ Java</div>
+    <div class="nav-link" data-lang="js"   onclick="showLang('js')">⚡ JavaScript</div>
+    <div class="nav-link" data-lang="html" onclick="showLang('html')">🌐 HTML</div>
+    <div class="nav-link" data-lang="css"  onclick="showLang('css')">🎨 CSS</div>
+  </div>
+  <input class="search-box" type="text" placeholder="🔍 Search topics..." oninput="handleSearch(this.value)">
+</nav>
+
+<div class="layout">
+  <aside id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Java</div>
+      <div class="sidebar-item" data-lang="java" onclick="showArticle('java-intro')"><div class="dot dot-java"></div> Introduction to Java</div>
+      <div class="sidebar-item" data-lang="java" onclick="showArticle('java-oop')"><div class="dot dot-java"></div> OOP Concepts</div>
+      <div class="sidebar-item" data-lang="java" onclick="showArticle('java-arrays')"><div class="dot dot-java"></div> Arrays & Collections</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">JavaScript</div>
+      <div class="sidebar-item" data-lang="js" onclick="showArticle('js-intro')"><div class="dot dot-js"></div> Introduction to JS</div>
+      <div class="sidebar-item" data-lang="js" onclick="showArticle('js-dom')"><div class="dot dot-js"></div> DOM Manipulation</div>
+      <div class="sidebar-item" data-lang="js" onclick="showArticle('js-async')"><div class="dot dot-js"></div> Async & Promises</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">HTML</div>
+      <div class="sidebar-item" data-lang="html" onclick="showArticle('html-intro')"><div class="dot dot-html"></div> HTML Basics</div>
+      <div class="sidebar-item" data-lang="html" onclick="showArticle('html-forms')"><div class="dot dot-html"></div> Forms & Inputs</div>
+      <div class="sidebar-item" data-lang="html" onclick="showArticle('html-semantic')"><div class="dot dot-html"></div> Semantic HTML</div>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">CSS</div>
+      <div class="sidebar-item" data-lang="css" onclick="showArticle('css-intro')"><div class="dot dot-css"></div> CSS Fundamentals</div>
+      <div class="sidebar-item" data-lang="css" onclick="showArticle('css-flexbox')"><div class="dot dot-css"></div> Flexbox Layout</div>
+      <div class="sidebar-item" data-lang="css" onclick="showArticle('css-grid')"><div class="dot dot-css"></div> CSS Grid</div>
+    </div>
+  </aside>
+
+  <main>
+    <!-- HOME -->
+    <div id="page-home" class="home">
+      <div class="home-hero">
+        <h1>The IT Student's<br>Knowledge Base</h1>
+        <p>A comprehensive reference wiki covering the four pillars of front-end and back-end development. Learn Java, JavaScript, HTML, and CSS from fundamentals to advanced concepts.</p>
+      </div>
+      <div class="lang-cards">
+        <div class="lang-card" data-lang="java" onclick="showLang('java')">
+          <div class="card-icon">☕</div>
+          <div class="card-title">Java</div>
+          <div class="card-desc">Object-oriented, platform-independent language used in enterprise apps, Android, and backend systems.</div>
+          <div class="card-topics">
+            <span class="topic-tag">OOP</span><span class="topic-tag">Collections</span><span class="topic-tag">Generics</span><span class="topic-tag">Threads</span>
+          </div>
+        </div>
+        <div class="lang-card" data-lang="js" onclick="showLang('js')">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">JavaScript</div>
+          <div class="card-desc">The language of the web — dynamic, event-driven, and essential for interactive front-end and Node.js.</div>
+          <div class="card-topics">
+            <span class="topic-tag">DOM</span><span class="topic-tag">Async</span><span class="topic-tag">ES6+</span><span class="topic-tag">Closures</span>
+          </div>
+        </div>
+        <div class="lang-card" data-lang="html" onclick="showLang('html')">
+          <div class="card-icon">🌐</div>
+          <div class="card-title">HTML</div>
+          <div class="card-desc">The skeleton of every web page — structured markup that browsers interpret to render content.</div>
+          <div class="card-topics">
+            <span class="topic-tag">Semantics</span><span class="topic-tag">Forms</span><span class="topic-tag">A11y</span><span class="topic-tag">Media</span>
+          </div>
+        </div>
+        <div class="lang-card" data-lang="css" onclick="showLang('css')">
+          <div class="card-icon">🎨</div>
+          <div class="card-title">CSS</div>
+          <div class="card-desc">Styling and layout engine for the web — from colors and fonts to Flexbox, Grid, and animations.</div>
+          <div class="card-topics">
+            <span class="topic-tag">Flexbox</span><span class="topic-tag">Grid</span><span class="topic-tag">Variables</span><span class="topic-tag">Animations</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JAVA ARTICLES -->
+    <div id="page-java-intro" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('java')">Java</span> / Introduction</div>
+        <div class="article-title">Introduction to Java</div>
+        <div class="article-meta"><span class="lang-badge java">Java</span><span class="article-difficulty">🟢 Beginner</span></div>
+      </div>
+      <div class="article-body clearfix">
+        <div class="infobox">
+          <div class="infobox-title">Quick Facts</div>
+          <div class="infobox-row"><span class="infobox-key">Designed by</span><span class="infobox-val">James Gosling</span></div>
+          <div class="infobox-row"><span class="infobox-key">Year</span><span class="infobox-val">1995</span></div>
+          <div class="infobox-row"><span class="infobox-key">Paradigm</span><span class="infobox-val">OOP</span></div>
+          <div class="infobox-row"><span class="infobox-key">Typing</span><span class="infobox-val">Static</span></div>
+          <div class="infobox-row"><span class="infobox-key">Runs on</span><span class="infobox-val">JVM</span></div>
+          <div class="infobox-row"><span class="infobox-key">File ext.</span><span class="infobox-val">.java</span></div>
+        </div>
+        <div class="toc">
+          <div class="toc-title">Contents</div>
+          <a href="#">What is Java?</a>
+          <a href="#">How Java Works</a>
+          <a href="#">Your First Program</a>
+          <a href="#">Data Types</a>
+          <a href="#">Control Flow</a>
+        </div>
+        <h2>What is Java?</h2>
+        <p>Java is a high-level, class-based, object-oriented programming language that is designed to have as few implementation dependencies as possible. The slogan <em>"Write Once, Run Anywhere"</em> (WORA) captures Java's key feature — compiled Java code can run on all platforms that support Java without recompilation.</p>
+        <h2>How Java Works</h2>
+        <p>Java source code (<code>.java</code> files) is compiled by the Java Compiler (<code>javac</code>) into bytecode (<code>.class</code> files). This bytecode runs on the Java Virtual Machine (JVM), which translates it into machine-specific instructions at runtime.</p>
+        <h2>Your First Program</h2>
+        <pre><code><span class="comment">// HelloWorld.java</span>
+<span class="keyword">public class</span> <span class="type">HelloWorld</span> {
+    <span class="keyword">public static void</span> <span class="fn">main</span>(<span class="type">String</span>[] args) {
+        <span class="type">System</span>.out.<span class="fn">println</span>(<span class="string">"Hello, World!"</span>);
+    }
+}</code></pre>
+        <p>Every Java program must have a <code>main</code> method — it is the entry point. The class name must match the file name exactly.</p>
+        <h2>Data Types</h2>
+        <p>Java has two categories of data types: primitive and reference types.</p>
+        <ul>
+          <li><strong>Primitive:</strong> <code>int</code>, <code>double</code>, <code>float</code>, <code>long</code>, <code>short</code>, <code>byte</code>, <code>char</code>, <code>boolean</code></li>
+          <li><strong>Reference:</strong> Objects, arrays, strings, and user-defined classes</li>
+        </ul>
+        <pre><code><span class="keyword">int</span> age = <span class="number">21</span>;
+<span class="keyword">double</span> gpa = <span class="number">3.85</span>;
+<span class="type">String</span> name = <span class="string">"Alice"</span>;
+<span class="keyword">boolean</span> isStudent = <span class="keyword">true</span>;</code></pre>
+        <h2>Control Flow</h2>
+        <h3>If / Else</h3>
+        <pre><code><span class="keyword">if</span> (age >= <span class="number">18</span>) {
+    <span class="type">System</span>.out.<span class="fn">println</span>(<span class="string">"Adult"</span>);
+} <span class="keyword">else</span> {
+    <span class="type">System</span>.out.<span class="fn">println</span>(<span class="string">"Minor"</span>);
+}</code></pre>
+        <h3>For Loop</h3>
+        <pre><code><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i < <span class="number">5</span>; i++) {
+    <span class="type">System</span>.out.<span class="fn">println</span>(<span class="string">"i = "</span> + i);
+}</code></pre>
+        <div class="tip-box">
+          <strong>💡 Tip</strong>
+          <p>Java is case-sensitive. <code>Main</code>, <code>main</code>, and <code>MAIN</code> are three different identifiers.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-java-oop" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('java')">Java</span> / OOP</div>
+        <div class="article-title">Object-Oriented Programming</div>
+        <div class="article-meta"><span class="lang-badge java">Java</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body clearfix">
+        <div class="infobox">
+          <div class="infobox-title">4 Pillars of OOP</div>
+          <div class="infobox-row"><span class="infobox-key">1.</span><span class="infobox-val">Encapsulation</span></div>
+          <div class="infobox-row"><span class="infobox-key">2.</span><span class="infobox-val">Inheritance</span></div>
+          <div class="infobox-row"><span class="infobox-key">3.</span><span class="infobox-val">Polymorphism</span></div>
+          <div class="infobox-row"><span class="infobox-key">4.</span><span class="infobox-val">Abstraction</span></div>
+        </div>
+        <h2>Classes and Objects</h2>
+        <p>A class is a blueprint for creating objects. An object is an instance of a class. Classes contain fields (state) and methods (behavior).</p>
+        <pre><code><span class="keyword">public class</span> <span class="type">Student</span> {
+    <span class="comment">// Fields</span>
+    <span class="keyword">private</span> <span class="type">String</span> name;
+    <span class="keyword">private int</span> age;
+
+    <span class="comment">// Constructor</span>
+    <span class="keyword">public</span> <span class="fn">Student</span>(<span class="type">String</span> name, <span class="keyword">int</span> age) {
+        <span class="keyword">this</span>.name = name;
+        <span class="keyword">this</span>.age = age;
+    }
+
+    <span class="comment">// Getter</span>
+    <span class="keyword">public</span> <span class="type">String</span> <span class="fn">getName</span>() { <span class="keyword">return</span> name; }
+
+    <span class="comment">// Method</span>
+    <span class="keyword">public void</span> <span class="fn">study</span>() {
+        <span class="type">System</span>.out.<span class="fn">println</span>(name + <span class="string">" is studying!"</span>);
+    }
+}
+
+<span class="comment">// Creating objects</span>
+<span class="type">Student</span> s1 = <span class="keyword">new</span> <span class="fn">Student</span>(<span class="string">"Alice"</span>, <span class="number">20</span>);
+s1.<span class="fn">study</span>(); <span class="comment">// Alice is studying!</span></code></pre>
+        <h2>Inheritance</h2>
+        <p>Inheritance allows a class to acquire the properties and behaviors of another class using <code>extends</code>.</p>
+        <pre><code><span class="keyword">public class</span> <span class="type">GradStudent</span> <span class="keyword">extends</span> <span class="type">Student</span> {
+    <span class="keyword">private</span> <span class="type">String</span> thesis;
+
+    <span class="keyword">public</span> <span class="fn">GradStudent</span>(<span class="type">String</span> name, <span class="keyword">int</span> age, <span class="type">String</span> thesis) {
+        <span class="keyword">super</span>(name, age); <span class="comment">// Call parent constructor</span>
+        <span class="keyword">this</span>.thesis = thesis;
+    }
+}</code></pre>
+        <h2>Interfaces</h2>
+        <pre><code><span class="keyword">interface</span> <span class="type">Printable</span> {
+    <span class="keyword">void</span> <span class="fn">print</span>(); <span class="comment">// Abstract method</span>
+}
+
+<span class="keyword">class</span> <span class="type">Report</span> <span class="keyword">implements</span> <span class="type">Printable</span> {
+    <span class="keyword">public void</span> <span class="fn">print</span>() {
+        <span class="type">System</span>.out.<span class="fn">println</span>(<span class="string">"Printing report..."</span>);
+    }
+}</code></pre>
+        <div class="tip-box">
+          <strong>💡 Tip</strong>
+          <p>Use <code>private</code> fields and public getters/setters (encapsulation) to protect your object's internal state from unintended modification.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-java-arrays" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('java')">Java</span> / Arrays & Collections</div>
+        <div class="article-title">Arrays & Collections</div>
+        <div class="article-meta"><span class="lang-badge java">Java</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body clearfix">
+        <h2>Arrays</h2>
+        <p>Arrays are fixed-size containers holding elements of the same type.</p>
+        <pre><code><span class="keyword">int</span>[] numbers = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>};
+<span class="type">System</span>.out.<span class="fn">println</span>(numbers[<span class="number">0</span>]); <span class="comment">// 1</span>
+<span class="type">System</span>.out.<span class="fn">println</span>(numbers.length); <span class="comment">// 5</span>
+
+<span class="comment">// Enhanced for loop</span>
+<span class="keyword">for</span> (<span class="keyword">int</span> n : numbers) {
+    <span class="type">System</span>.out.<span class="fn">print</span>(n + <span class="string">" "</span>);
+}</code></pre>
+        <h2>ArrayList</h2>
+        <p><code>ArrayList</code> is a dynamic, resizable list from the <code>java.util</code> package.</p>
+        <pre><code><span class="keyword">import</span> java.util.ArrayList;
+
+<span class="type">ArrayList</span>&lt;<span class="type">String</span>&gt; fruits = <span class="keyword">new</span> <span class="type">ArrayList</span>&lt;&gt;();
+fruits.<span class="fn">add</span>(<span class="string">"Apple"</span>);
+fruits.<span class="fn">add</span>(<span class="string">"Mango"</span>);
+fruits.<span class="fn">add</span>(<span class="string">"Banana"</span>);
+
+fruits.<span class="fn">remove</span>(<span class="string">"Mango"</span>);
+<span class="type">System</span>.out.<span class="fn">println</span>(fruits.size()); <span class="comment">// 2</span></code></pre>
+        <h2>HashMap</h2>
+        <pre><code><span class="keyword">import</span> java.util.HashMap;
+
+<span class="type">HashMap</span>&lt;<span class="type">String</span>, <span class="type">Integer</span>&gt; grades = <span class="keyword">new</span> <span class="type">HashMap</span>&lt;&gt;();
+grades.<span class="fn">put</span>(<span class="string">"Alice"</span>, <span class="number">95</span>);
+grades.<span class="fn">put</span>(<span class="string">"Bob"</span>, <span class="number">87</span>);
+
+<span class="type">System</span>.out.<span class="fn">println</span>(grades.<span class="fn">get</span>(<span class="string">"Alice"</span>)); <span class="comment">// 95</span></code></pre>
+      </div>
+    </div>
+
+    <!-- JS ARTICLES -->
+    <div id="page-js-intro" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('js')">JavaScript</span> / Introduction</div>
+        <div class="article-title">Introduction to JavaScript</div>
+        <div class="article-meta"><span class="lang-badge js">JavaScript</span><span class="article-difficulty">🟢 Beginner</span></div>
+      </div>
+      <div class="article-body clearfix">
+        <div class="infobox">
+          <div class="infobox-title">Quick Facts</div>
+          <div class="infobox-row"><span class="infobox-key">Created by</span><span class="infobox-val">Brendan Eich</span></div>
+          <div class="infobox-row"><span class="infobox-key">Year</span><span class="infobox-val">1995</span></div>
+          <div class="infobox-row"><span class="infobox-key">Paradigm</span><span class="infobox-val">Multi</span></div>
+          <div class="infobox-row"><span class="infobox-key">Typing</span><span class="infobox-val">Dynamic</span></div>
+          <div class="infobox-row"><span class="infobox-key">Runs in</span><span class="infobox-val">Browser / Node</span></div>
+        </div>
+        <h2>What is JavaScript?</h2>
+        <p>JavaScript is the only programming language natively supported by web browsers. It adds interactivity to HTML pages — handling events, updating the DOM, and communicating with servers. With Node.js, it also runs server-side.</p>
+        <h2>Variables</h2>
+        <pre><code><span class="keyword">let</span> name = <span class="string">"Alice"</span>;      <span class="comment">// block-scoped, can reassign</span>
+<span class="keyword">const</span> PI = <span class="number">3.14159</span>;   <span class="comment">// block-scoped, constant</span>
+<span class="keyword">var</span> legacy = <span class="string">"old"</span>;    <span class="comment">// function-scoped (avoid in modern JS)</span></code></pre>
+        <h2>Functions</h2>
+        <pre><code><span class="comment">// Traditional function</span>
+<span class="keyword">function</span> <span class="fn">greet</span>(name) {
+    <span class="keyword">return</span> <span class="string">`Hello, ${name}!`</span>;
+}
+
+<span class="comment">// Arrow function (ES6+)</span>
+<span class="keyword">const</span> <span class="fn">add</span> = (a, b) => a + b;
+
+console.<span class="fn">log</span>(<span class="fn">greet</span>(<span class="string">"Bob"</span>)); <span class="comment">// Hello, Bob!</span>
+console.<span class="fn">log</span>(<span class="fn">add</span>(<span class="number">3</span>, <span class="number">4</span>));    <span class="comment">// 7</span></code></pre>
+        <h2>Arrays & Objects</h2>
+        <pre><code><span class="keyword">const</span> langs = [<span class="string">"Java"</span>, <span class="string">"JS"</span>, <span class="string">"Python"</span>];
+langs.<span class="fn">push</span>(<span class="string">"Rust"</span>);
+langs.<span class="fn">filter</span>(l => l.length > <span class="number">3</span>); <span class="comment">// ["Java", "Python", "Rust"]</span>
+
+<span class="keyword">const</span> student = {
+    name: <span class="string">"Alice"</span>,
+    gpa: <span class="number">3.9</span>,
+    <span class="fn">greet</span>() { <span class="keyword">return</span> <span class="string">`Hi, I'm ${this.name}`</span>; }
+};</code></pre>
+        <div class="tip-box">
+          <strong>💡 Tip</strong>
+          <p>Always prefer <code>const</code> by default. Use <code>let</code> only when you know the variable will be reassigned. Avoid <code>var</code>.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-js-dom" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('js')">JavaScript</span> / DOM</div>
+        <div class="article-title">DOM Manipulation</div>
+        <div class="article-meta"><span class="lang-badge js">JavaScript</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body">
+        <h2>What is the DOM?</h2>
+        <p>The Document Object Model (DOM) is a programming interface for HTML. It represents the page as a tree of nodes that JavaScript can read and modify — enabling dynamic pages.</p>
+        <h2>Selecting Elements</h2>
+        <pre><code><span class="comment">// By ID</span>
+<span class="keyword">const</span> btn = document.<span class="fn">getElementById</span>(<span class="string">"myBtn"</span>);
+
+<span class="comment">// By CSS selector (first match)</span>
+<span class="keyword">const</span> header = document.<span class="fn">querySelector</span>(<span class="string">"h1"</span>);
+
+<span class="comment">// All matches</span>
+<span class="keyword">const</span> items = document.<span class="fn">querySelectorAll</span>(<span class="string">".item"</span>);</code></pre>
+        <h2>Modifying the DOM</h2>
+        <pre><code>header.textContent = <span class="string">"New Title"</span>;
+header.style.color = <span class="string">"red"</span>;
+header.classList.<span class="fn">add</span>(<span class="string">"highlight"</span>);
+
+<span class="comment">// Create and append</span>
+<span class="keyword">const</span> p = document.<span class="fn">createElement</span>(<span class="string">"p"</span>);
+p.textContent = <span class="string">"New paragraph"</span>;
+document.body.<span class="fn">appendChild</span>(p);</code></pre>
+        <h2>Event Listeners</h2>
+        <pre><code>btn.<span class="fn">addEventListener</span>(<span class="string">"click"</span>, (event) => {
+    console.<span class="fn">log</span>(<span class="string">"Button clicked!"</span>, event.target);
+});
+
+<span class="comment">// Form input</span>
+input.<span class="fn">addEventListener</span>(<span class="string">"input"</span>, (e) => {
+    console.<span class="fn">log</span>(e.target.value);
+});</code></pre>
+      </div>
+    </div>
+
+    <div id="page-js-async" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('js')">JavaScript</span> / Async</div>
+        <div class="article-title">Async & Promises</div>
+        <div class="article-meta"><span class="lang-badge js">JavaScript</span><span class="article-difficulty">🔴 Advanced</span></div>
+      </div>
+      <div class="article-body">
+        <h2>Callbacks</h2>
+        <p>A callback is a function passed as an argument to another function, executed after an async operation completes. However, deeply nested callbacks lead to "callback hell."</p>
+        <h2>Promises</h2>
+        <pre><code><span class="keyword">const</span> fetchData = <span class="keyword">new</span> <span class="type">Promise</span>((resolve, reject) => {
+    <span class="fn">setTimeout</span>(() => <span class="fn">resolve</span>(<span class="string">"Data loaded"</span>), <span class="number">1000</span>);
+});
+
+fetchData
+    .<span class="fn">then</span>(data => console.<span class="fn">log</span>(data))
+    .<span class="fn">catch</span>(err => console.<span class="fn">error</span>(err));</code></pre>
+        <h2>Async / Await</h2>
+        <p>Async/await is syntactic sugar over Promises, making asynchronous code look and behave like synchronous code.</p>
+        <pre><code><span class="keyword">async function</span> <span class="fn">getUser</span>() {
+    <span class="keyword">try</span> {
+        <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="fn">fetch</span>(<span class="string">"https://api.example.com/user"</span>);
+        <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="fn">json</span>();
+        console.<span class="fn">log</span>(data);
+    } <span class="keyword">catch</span> (error) {
+        console.<span class="fn">error</span>(<span class="string">"Error:"</span>, error);
+    }
+}</code></pre>
+        <div class="tip-box">
+          <strong>💡 Tip</strong>
+          <p>Always wrap <code>await</code> calls in <code>try/catch</code> — rejected promises that aren't caught will cause unhandled promise rejection errors.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- HTML ARTICLES -->
+    <div id="page-html-intro" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('html')">HTML</span> / Basics</div>
+        <div class="article-title">HTML Basics</div>
+        <div class="article-meta"><span class="lang-badge html">HTML</span><span class="article-difficulty">🟢 Beginner</span></div>
+      </div>
+      <div class="article-body clearfix">
+        <div class="infobox">
+          <div class="infobox-title">Quick Facts</div>
+          <div class="infobox-row"><span class="infobox-key">Full name</span><span class="infobox-val">HyperText Markup Language</span></div>
+          <div class="infobox-row"><span class="infobox-key">Latest</span><span class="infobox-val">HTML5</span></div>
+          <div class="infobox-row"><span class="infobox-key">File ext.</span><span class="infobox-val">.html</span></div>
+          <div class="infobox-row"><span class="infobox-key">Maintained by</span><span class="infobox-val">WHATWG</span></div>
+        </div>
+        <h2>What is HTML?</h2>
+        <p>HTML is the standard markup language for creating web pages. It describes the structure of a web page using a series of elements represented by tags.</p>
+        <h2>Document Structure</h2>
+        <pre><code><span class="tag">&lt;!DOCTYPE html&gt;</span>
+<span class="tag">&lt;html</span> <span class="attr">lang</span>=<span class="val">"en"</span><span class="tag">&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">charset</span>=<span class="val">"UTF-8"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;meta</span> <span class="attr">name</span>=<span class="val">"viewport"</span> <span class="attr">content</span>=<span class="val">"width=device-width, initial-scale=1.0"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;title&gt;</span>My Page<span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+    <span class="tag">&lt;h1&gt;</span>Hello World<span class="tag">&lt;/h1&gt;</span>
+    <span class="tag">&lt;p&gt;</span>My first paragraph.<span class="tag">&lt;/p&gt;</span>
+<span class="tag">&lt;/body&gt;</span>
+<span class="tag">&lt;/html&gt;</span></code></pre>
+        <h2>Common Tags</h2>
+        <pre><code><span class="comment">&lt;!-- Headings --&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Main Title<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;h2&gt;</span>Subtitle<span class="tag">&lt;/h2&gt;</span>
+
+<span class="comment">&lt;!-- Links --&gt;</span>
+<span class="tag">&lt;a</span> <span class="attr">href</span>=<span class="val">"https://example.com"</span><span class="tag">&gt;</span>Click me<span class="tag">&lt;/a&gt;</span>
+
+<span class="comment">&lt;!-- Image --&gt;</span>
+<span class="tag">&lt;img</span> <span class="attr">src</span>=<span class="val">"photo.jpg"</span> <span class="attr">alt</span>=<span class="val">"Description"</span><span class="tag">&gt;</span>
+
+<span class="comment">&lt;!-- Lists --&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+    <span class="tag">&lt;li&gt;</span>Item 1<span class="tag">&lt;/li&gt;</span>
+    <span class="tag">&lt;li&gt;</span>Item 2<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></code></pre>
+      </div>
+    </div>
+
+    <div id="page-html-forms" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('html')">HTML</span> / Forms</div>
+        <div class="article-title">Forms & Inputs</div>
+        <div class="article-meta"><span class="lang-badge html">HTML</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body">
+        <h2>Basic Form Structure</h2>
+        <pre><code><span class="tag">&lt;form</span> <span class="attr">action</span>=<span class="val">"/submit"</span> <span class="attr">method</span>=<span class="val">"POST"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"name"</span><span class="tag">&gt;</span>Name:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span> <span class="attr">id</span>=<span class="val">"name"</span> <span class="attr">name</span>=<span class="val">"name"</span> <span class="attr">required</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;label</span> <span class="attr">for</span>=<span class="val">"email"</span><span class="tag">&gt;</span>Email:<span class="tag">&lt;/label&gt;</span>
+    <span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"email"</span> <span class="attr">id</span>=<span class="val">"email"</span> <span class="attr">name</span>=<span class="val">"email"</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;button</span> <span class="attr">type</span>=<span class="val">"submit"</span><span class="tag">&gt;</span>Submit<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/form&gt;</span></code></pre>
+        <h2>Input Types</h2>
+        <pre><code><span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"text"</span><span class="tag">&gt;</span>      <span class="comment">&lt;!-- Plain text --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"password"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- Hidden characters --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"number"</span><span class="tag">&gt;</span>    <span class="comment">&lt;!-- Numeric spinner --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"checkbox"</span><span class="tag">&gt;</span>  <span class="comment">&lt;!-- Toggle --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"radio"</span><span class="tag">&gt;</span>     <span class="comment">&lt;!-- Single choice --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"file"</span><span class="tag">&gt;</span>      <span class="comment">&lt;!-- File upload --&gt;</span>
+<span class="tag">&lt;input</span> <span class="attr">type</span>=<span class="val">"range"</span><span class="tag">&gt;</span>     <span class="comment">&lt;!-- Slider --&gt;</span>
+<span class="tag">&lt;textarea&gt;&lt;/textarea&gt;</span>   <span class="comment">&lt;!-- Multi-line --&gt;</span>
+<span class="tag">&lt;select&gt;</span>...<span class="tag">&lt;/select&gt;</span>    <span class="comment">&lt;!-- Dropdown --&gt;</span></code></pre>
+        <div class="tip-box">
+          <strong>💡 Accessibility</strong>
+          <p>Always associate <code>&lt;label&gt;</code> with inputs using the <code>for</code> attribute matching the input's <code>id</code>. This is vital for screen readers.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-html-semantic" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('html')">HTML</span> / Semantic</div>
+        <div class="article-title">Semantic HTML</div>
+        <div class="article-meta"><span class="lang-badge html">HTML</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body">
+        <h2>Why Semantic HTML?</h2>
+        <p>Semantic elements clearly describe their meaning to both the browser and the developer. They improve SEO, accessibility, and code maintainability. Instead of using generic <code>&lt;div&gt;</code> elements everywhere, use the right element for the right job.</p>
+        <pre><code><span class="comment">&lt;!-- Non-semantic (avoid) --&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"header"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="attr">class</span>=<span class="val">"nav"</span><span class="tag">&gt;</span>...<span class="tag">&lt;/div&gt;</span>
+
+<span class="comment">&lt;!-- Semantic (preferred) --&gt;</span>
+<span class="tag">&lt;header&gt;</span>...<span class="tag">&lt;/header&gt;</span>
+<span class="tag">&lt;nav&gt;</span>...<span class="tag">&lt;/nav&gt;</span>
+<span class="tag">&lt;main&gt;</span>
+    <span class="tag">&lt;article&gt;</span>
+        <span class="tag">&lt;section&gt;</span>...<span class="tag">&lt;/section&gt;</span>
+    <span class="tag">&lt;/article&gt;</span>
+    <span class="tag">&lt;aside&gt;</span>...<span class="tag">&lt;/aside&gt;</span>
+<span class="tag">&lt;/main&gt;</span>
+<span class="tag">&lt;footer&gt;</span>...<span class="tag">&lt;/footer&gt;</span></code></pre>
+        <h2>Key Semantic Elements</h2>
+        <ul>
+          <li><code>&lt;header&gt;</code> — Introductory content, logo, navigation</li>
+          <li><code>&lt;nav&gt;</code> — Navigation links</li>
+          <li><code>&lt;main&gt;</code> — Primary content of the page (one per page)</li>
+          <li><code>&lt;article&gt;</code> — Self-contained content (blog post, news)</li>
+          <li><code>&lt;section&gt;</code> — Thematic grouping of content</li>
+          <li><code>&lt;aside&gt;</code> — Tangentially related content, sidebars</li>
+          <li><code>&lt;footer&gt;</code> — Footer info, credits, links</li>
+          <li><code>&lt;figure&gt;</code> / <code>&lt;figcaption&gt;</code> — Images with captions</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- CSS ARTICLES -->
+    <div id="page-css-intro" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('css')">CSS</span> / Fundamentals</div>
+        <div class="article-title">CSS Fundamentals</div>
+        <div class="article-meta"><span class="lang-badge css">CSS</span><span class="article-difficulty">🟢 Beginner</span></div>
+      </div>
+      <div class="article-body clearfix">
+        <div class="infobox">
+          <div class="infobox-title">Quick Facts</div>
+          <div class="infobox-row"><span class="infobox-key">Full name</span><span class="infobox-val">Cascading Style Sheets</span></div>
+          <div class="infobox-row"><span class="infobox-key">Latest</span><span class="infobox-val">CSS3</span></div>
+          <div class="infobox-row"><span class="infobox-key">Maintained by</span><span class="infobox-val">W3C</span></div>
+        </div>
+        <h2>What is CSS?</h2>
+        <p>CSS is a stylesheet language used to control the presentation of HTML documents — colors, fonts, spacing, layout, and more. It separates content (HTML) from design (CSS).</p>
+        <h2>Syntax</h2>
+        <pre><code><span class="comment">/* selector { property: value; } */</span>
+
+<span class="prop">h1</span> {
+    <span class="attr">color</span>: <span class="val">#333333</span>;
+    <span class="attr">font-size</span>: <span class="val">2rem</span>;
+    <span class="attr">font-family</span>: <span class="val">Arial, sans-serif</span>;
+}
+
+<span class="prop">.card</span> {
+    <span class="attr">background-color</span>: <span class="val">white</span>;
+    <span class="attr">border-radius</span>: <span class="val">8px</span>;
+    <span class="attr">padding</span>: <span class="val">1rem</span>;
+    <span class="attr">box-shadow</span>: <span class="val">0 2px 10px rgba(0,0,0,0.1)</span>;
+}</code></pre>
+        <h2>Selectors</h2>
+        <pre><code><span class="prop">*</span> { }             <span class="comment">/* Universal */</span>
+<span class="prop">p</span> { }             <span class="comment">/* Element */</span>
+<span class="prop">.className</span> { }    <span class="comment">/* Class */</span>
+<span class="prop">#idName</span> { }       <span class="comment">/* ID */</span>
+<span class="prop">a:hover</span> { }       <span class="comment">/* Pseudo-class */</span>
+<span class="prop">p::first-line</span> { } <span class="comment">/* Pseudo-element */</span>
+<span class="prop">div > p</span> { }       <span class="comment">/* Direct child */</span>
+<span class="prop">div p</span> { }         <span class="comment">/* Descendant */</span></code></pre>
+        <h2>Box Model</h2>
+        <p>Every element is a rectangular box. From inside out: content → padding → border → margin.</p>
+        <pre><code><span class="prop">.box</span> {
+    <span class="attr">width</span>: <span class="val">200px</span>;
+    <span class="attr">padding</span>: <span class="val">20px</span>;        <span class="comment">/* inside spacing */</span>
+    <span class="attr">border</span>: <span class="val">2px solid black</span>;
+    <span class="attr">margin</span>: <span class="val">10px</span>;         <span class="comment">/* outside spacing */</span>
+    <span class="attr">box-sizing</span>: <span class="val">border-box</span>; <span class="comment">/* include padding in width */</span>
+}</code></pre>
+        <h2>CSS Variables</h2>
+        <pre><code><span class="prop">:root</span> {
+    <span class="attr">--primary</span>: <span class="val">#4a90e2</span>;
+    <span class="attr">--spacing</span>: <span class="val">1rem</span>;
+}
+
+<span class="prop">button</span> {
+    <span class="attr">background</span>: <span class="val">var(--primary)</span>;
+    <span class="attr">padding</span>: <span class="val">var(--spacing)</span>;
+}</code></pre>
+      </div>
+    </div>
+
+    <div id="page-css-flexbox" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('css')">CSS</span> / Flexbox</div>
+        <div class="article-title">Flexbox Layout</div>
+        <div class="article-meta"><span class="lang-badge css">CSS</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body">
+        <h2>What is Flexbox?</h2>
+        <p>Flexbox (Flexible Box Module) is a one-dimensional layout model for arranging items in a row or column. It gives containers the ability to alter their children's width, height, and order to best fill available space.</p>
+        <h2>Container Properties</h2>
+        <pre><code><span class="prop">.container</span> {
+    <span class="attr">display</span>: <span class="val">flex</span>;               <span class="comment">/* activate flexbox */</span>
+    <span class="attr">flex-direction</span>: <span class="val">row</span>;         <span class="comment">/* row | column | row-reverse */</span>
+    <span class="attr">justify-content</span>: <span class="val">center</span>;    <span class="comment">/* main axis alignment */</span>
+    <span class="attr">align-items</span>: <span class="val">center</span>;        <span class="comment">/* cross axis alignment */</span>
+    <span class="attr">flex-wrap</span>: <span class="val">wrap</span>;            <span class="comment">/* allow wrapping */</span>
+    <span class="attr">gap</span>: <span class="val">1rem</span>;                  <span class="comment">/* space between items */</span>
+}</code></pre>
+        <h2>Item Properties</h2>
+        <pre><code><span class="prop">.item</span> {
+    <span class="attr">flex</span>: <span class="val">1</span>;           <span class="comment">/* grow, shrink, basis shorthand */</span>
+    <span class="attr">flex-grow</span>: <span class="val">2</span>;     <span class="comment">/* take 2x available space */</span>
+    <span class="attr">align-self</span>: <span class="val">flex-end</span>; <span class="comment">/* override align-items */</span>
+    <span class="attr">order</span>: <span class="val">-1</span>;        <span class="comment">/* reorder visually */</span>
+}</code></pre>
+        <h2>Common Patterns</h2>
+        <pre><code><span class="comment">/* Centered content */</span>
+<span class="prop">.center</span> {
+    <span class="attr">display</span>: <span class="val">flex</span>;
+    <span class="attr">justify-content</span>: <span class="val">center</span>;
+    <span class="attr">align-items</span>: <span class="val">center</span>;
+    <span class="attr">min-height</span>: <span class="val">100vh</span>;
+}
+
+<span class="comment">/* Navigation bar */</span>
+<span class="prop">nav</span> {
+    <span class="attr">display</span>: <span class="val">flex</span>;
+    <span class="attr">justify-content</span>: <span class="val">space-between</span>;
+    <span class="attr">align-items</span>: <span class="val">center</span>;
+    <span class="attr">padding</span>: <span class="val">0 2rem</span>;
+}</code></pre>
+        <div class="tip-box">
+          <strong>💡 Remember</strong>
+          <p><code>justify-content</code> works along the main axis (horizontal by default), while <code>align-items</code> works along the cross axis (vertical by default).</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="page-css-grid" class="article">
+      <div class="article-header">
+        <div class="article-breadcrumb"><span onclick="showHome()">Home</span> / <span onclick="showLang('css')">CSS</span> / Grid</div>
+        <div class="article-title">CSS Grid</div>
+        <div class="article-meta"><span class="lang-badge css">CSS</span><span class="article-difficulty">🟡 Intermediate</span></div>
+      </div>
+      <div class="article-body">
+        <h2>What is CSS Grid?</h2>
+        <p>CSS Grid Layout is a two-dimensional layout system — it handles both rows and columns simultaneously. Perfect for page layouts and complex UI patterns.</p>
+        <h2>Defining a Grid</h2>
+        <pre><code><span class="prop">.grid</span> {
+    <span class="attr">display</span>: <span class="val">grid</span>;
+    <span class="attr">grid-template-columns</span>: <span class="val">1fr 2fr 1fr</span>;   <span class="comment">/* 3 columns */</span>
+    <span class="attr">grid-template-rows</span>: <span class="val">100px auto 60px</span>;  <span class="comment">/* 3 rows */</span>
+    <span class="attr">gap</span>: <span class="val">1rem</span>;                             <span class="comment">/* row & col gap */</span>
+}
+
+<span class="comment">/* Repeat shorthand */</span>
+<span class="prop">.cards</span> {
+    <span class="attr">display</span>: <span class="val">grid</span>;
+    <span class="attr">grid-template-columns</span>: <span class="val">repeat(auto-fit, minmax(250px, 1fr))</span>; <span class="comment">/* responsive! */</span>
+}</code></pre>
+        <h2>Placing Items</h2>
+        <pre><code><span class="prop">.header</span> {
+    <span class="attr">grid-column</span>: <span class="val">1 / -1</span>;   <span class="comment">/* span all columns */</span>
+    <span class="attr">grid-row</span>: <span class="val">1</span>;
+}
+
+<span class="prop">.sidebar</span> {
+    <span class="attr">grid-column</span>: <span class="val">1</span>;
+    <span class="attr">grid-row</span>: <span class="val">2 / 4</span>;       <span class="comment">/* span rows 2 and 3 */</span>
+}
+
+<span class="prop">.main</span> {
+    <span class="attr">grid-column</span>: <span class="val">2 / -1</span>;
+    <span class="attr">grid-row</span>: <span class="val">2</span>;
+}</code></pre>
+        <h2>Named Areas</h2>
+        <pre><code><span class="prop">.layout</span> {
+    <span class="attr">display</span>: <span class="val">grid</span>;
+    <span class="attr">grid-template-areas</span>:
+        <span class="val">"header header"</span>
+        <span class="val">"sidebar main"</span>
+        <span class="val">"footer footer"</span>;
+}
+<span class="prop">header</span> { <span class="attr">grid-area</span>: <span class="val">header</span>; }
+<span class="prop">aside</span>  { <span class="attr">grid-area</span>: <span class="val">sidebar</span>; }
+<span class="prop">main</span>   { <span class="attr">grid-area</span>: <span class="val">main</span>; }
+<span class="prop">footer</span> { <span class="attr">grid-area</span>: <span class="val">footer</span>; }</code></pre>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script>
+  const articles = {
+    'java': ['java-intro','java-oop','java-arrays'],
+    'js':   ['js-intro','js-dom','js-async'],
+    'html': ['html-intro','html-forms','html-semantic'],
+    'css':  ['css-intro','css-flexbox','css-grid']
+  };
+
+  function hideAll() {
+    document.querySelectorAll('.home, .article').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.nav-link, .sidebar-item').forEach(el => el.classList.remove('active'));
+  }
+
+  function showHome() {
+    hideAll();
+    document.getElementById('page-home').style.display = 'block';
+    document.querySelector('.search-box').value = '';
+  }
+
+  function showLang(lang) {
+    showArticle(articles[lang][0]);
+    const navLink = document.querySelector(`.nav-link[data-lang="${lang}"]`);
+    if (navLink) navLink.classList.add('active');
+  }
+
+  function showArticle(id) {
+    hideAll();
+    const el = document.getElementById('page-' + id);
+    if (el) {
+      el.style.display = 'block';
+      const lang = id.split('-')[0];
+      const navLink = document.querySelector(`.nav-link[data-lang="${lang}"]`);
+      if (navLink) navLink.classList.add('active');
+      const sidebarItem = document.querySelector(`.sidebar-item[onclick="showArticle('${id}')"]`);
+      if (sidebarItem) sidebarItem.classList.add('active');
+      window.scrollTo(0, 0);
+    }
+  }
+
+  function handleSearch(query) {
+    if (!query) return;
+    const q = query.toLowerCase();
+    const map = {
+      'java': 'java-intro', 'oop': 'java-oop', 'object': 'java-oop', 'class': 'java-oop',
+      'array': 'java-arrays', 'arraylist': 'java-arrays', 'hashmap': 'java-arrays',
+      'javascript': 'js-intro', 'js': 'js-intro', 'variable': 'js-intro',
+      'dom': 'js-dom', 'event': 'js-dom', 'listener': 'js-dom',
+      'async': 'js-async', 'promise': 'js-async', 'await': 'js-async',
+      'html': 'html-intro', 'tag': 'html-intro', 'form': 'html-forms',
+      'input': 'html-forms', 'semantic': 'html-semantic', 'header': 'html-semantic',
+      'css': 'css-intro', 'selector': 'css-intro', 'flexbox': 'css-flexbox',
+      'flex': 'css-flexbox', 'grid': 'css-grid', 'layout': 'css-flexbox'
+    };
+    for (const [keyword, articleId] of Object.entries(map)) {
+      if (q.includes(keyword)) { showArticle(articleId); return; }
+    }
+  }
+
+  showHome();
+</script>
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Fira+Code:wght@400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    background: #0a0e1a;
+    font-family: 'Space Grotesk', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .bg-grid {
+    position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+
+  .bg-glow {
+    position: fixed; pointer-events: none; z-index: 0;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+  }
+  .bg-glow.tl { width:400px;height:400px;top:-100px;left:-100px;background:#00d4ff; }
+  .bg-glow.br { width:350px;height:350px;bottom:-80px;right:-80px;background:#0066ff; }
+
+  .page { display: none; position: relative; z-index: 1; width: 100%; max-width: 420px; padding: 16px; }
+  .page.active { display: block; animation: fadeSlide .35s ease; }
+
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card {
+    background: rgba(12,18,36,0.85);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 16px;
+    padding: 40px 36px 36px;
+    backdrop-filter: blur(20px);
+  }
+
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px; justify-content: center;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg,#00d4ff,#0066ff);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Fira Code', monospace;
+    font-size: 14px; font-weight: 500; color: #000;
+  }
+  .logo-text { font-family: 'Fira Code', monospace; font-size: 20px; color: #00d4ff; letter-spacing: 1px; }
+
+  h2 { font-size: 22px; font-weight: 600; color: #fff; margin-bottom: 6px; text-align: center; }
+  .sub { font-size: 13px; color: rgba(255,255,255,0.4); text-align: center; margin-bottom: 28px; }
+
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 12px; font-weight: 500; color: rgba(0,212,255,0.7); margin-bottom: 6px; letter-spacing: 0.5px; text-transform: uppercase; }
+  .field input {
+    width: 100%; height: 46px; padding: 0 16px;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.15);
+    border-radius: 10px; color: #fff; font-size: 14px;
+    font-family: 'Space Grotesk', sans-serif;
+    outline: none; transition: border-color .2s, background .2s;
+  }
+  .field input:focus {
+    border-color: rgba(0,212,255,0.5);
+    background: rgba(0,212,255,0.08);
+  }
+  .field input::placeholder { color: rgba(255,255,255,0.2); }
+
+  .error-msg {
+    font-size: 12px; color: #ff6b6b;
+    margin-bottom: 12px; text-align: center;
+    min-height: 18px;
+  }
+
+  .btn {
+    width: 100%; height: 48px;
+    background: linear-gradient(135deg,#00d4ff,#0066ff);
+    border: none; border-radius: 10px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px; font-weight: 600;
+    color: #000; cursor: pointer;
+    letter-spacing: 0.5px; transition: opacity .2s, transform .15s;
+    margin-top: 4px;
+  }
+  .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn:active { transform: scale(0.99); }
+
+  .link-row { text-align: center; margin-top: 20px; font-size: 13px; color: rgba(255,255,255,0.4); }
+  .link-row a { color: #00d4ff; text-decoration: none; font-weight: 500; cursor: pointer; }
+  .link-row a:hover { text-decoration: underline; }
+
+  .divider { border: none; border-top: 1px solid rgba(255,255,255,0.08); margin: 20px 0; }
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="bg-glow tl"></div>
+<div class="bg-glow br"></div>
+
+<!-- LOGIN -->
+<div id="pg-login" class="page active">
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">{C}</div>
+      <span class="logo-text">CodeQuest</span>
+    </div>
+    <h2>Welcome back</h2>
+    <p class="sub">Sign in to continue your journey</p>
+    <div class="field"><label>Username</label><input id="l-user" type="text" placeholder="your_username" autocomplete="off"></div>
+    <div class="field"><label>Password</label><input id="l-pass" type="password" placeholder="••••••••" autocomplete="off"></div>
+    <div class="error-msg" id="l-err"></div>
+    <button class="btn" onclick="doLogin()">Sign in</button>
+    <hr class="divider">
+    <div class="link-row">Don't have an account? <a onclick="show('pg-signup')">Create one</a></div>
+  </div>
+</div>
+
+<!-- SIGNUP -->
+<div id="pg-signup" class="page">
+  <div class="card">
+    <div class="logo">
+      <div class="logo-icon">{C}</div>
+      <span class="logo-text">CodeQuest</span>
+    </div>
+    <h2>Create account</h2>
+    <p class="sub">Start your coding adventure</p>
+    <div class="field"><label>Email</label><input id="s-email" type="email" placeholder="you@example.com" autocomplete="off"></div>
+    <div class="field"><label>Username</label><input id="s-user" type="text" placeholder="choose_a_username" autocomplete="off"></div>
+    <div class="field"><label>Password</label><input id="s-pass" type="password" placeholder="min. 6 characters" autocomplete="off"></div>
+    <div class="field"><label>Confirm Password</label><input id="s-conf" type="password" placeholder="repeat password" autocomplete="off"></div>
+    <div class="error-msg" id="s-err"></div>
+    <button class="btn" onclick="doSignup()">Create account</button>
+    <hr class="divider">
+    <div class="link-row">Already have an account? <a onclick="show('pg-login')">Sign in</a></div>
+  </div>
+</div>
+
+<!-- SUCCESS (after signup) -->
+<div id="pg-success" class="page">
+  <div class="card" style="text-align:center">
+    <div class="logo" style="justify-content:center">
+      <div class="logo-icon">{C}</div>
+      <span class="logo-text">CodeQuest</span>
+    </div>
+    <div style="font-size:44px;margin:8px 0 16px;">🎉</div>
+    <h2>Account created!</h2>
+    <p class="sub" style="margin-bottom:28px">Welcome to CodeQuest, <strong id="new-username" style="color:#00d4ff;"></strong>. Sign in to start questing.</p>
+    <button class="btn" onclick="show('pg-login')">Go to login</button>
+  </div>
+</div>
+
+<script>
+  const users = {};
+
+  function show(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const pg = document.getElementById(id);
+    if (pg) pg.classList.add('active');
+  }
+
+  function err(id, msg) { document.getElementById(id).textContent = msg; }
+
+  function doLogin() {
+    const u = document.getElementById('l-user').value.trim();
+    const p = document.getElementById('l-pass').value;
+    err('l-err','');
+    if (!u || !p) { err('l-err','Please fill in all fields.'); return; }
+    if (!users[u]) { err('l-err','No account found. Please sign up first.'); return; }
+    if (users[u].password !== p) { err('l-err','Incorrect password.'); return; }
+    // Redirect to main.html after successful login
+    window.location.href = 'main.html';
+  }
+
+  function doSignup() {
+    const email = document.getElementById('s-email').value.trim();
+    const u = document.getElementById('s-user').value.trim();
+    const p = document.getElementById('s-pass').value;
+    const c = document.getElementById('s-conf').value;
+    err('s-err','');
+    if (!email || !u || !p || !c) { err('s-err','Please fill in all fields.'); return; }
+    if (!/\S+@\S+\.\S+/.test(email)) { err('s-err','Enter a valid email address.'); return; }
+    if (p.length < 6) { err('s-err','Password must be at least 6 characters.'); return; }
+    if (p !== c) { err('s-err','Passwords do not match.'); return; }
+    if (users[u]) { err('s-err','Username already taken.'); return; }
+    users[u] = { email, password: p };
+    document.getElementById('new-username').textContent = u;
+    document.getElementById('l-user').value = u;
+    document.getElementById('l-pass').value = '';
+    show('pg-success');
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    const active = document.querySelector('.page.active');
+    if (!active) return;
+    if (active.id === 'pg-login') doLogin();
+    else if (active.id === 'pg-signup') doSignup();
+    else if (active.id === 'pg-success') show('pg-login');
+  });
+</script>
+</body>
+</html>
